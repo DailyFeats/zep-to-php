@@ -18,3 +18,7 @@ phalcon
 
 # GitEye Specific
 /.project
+
+cache
+
+output*

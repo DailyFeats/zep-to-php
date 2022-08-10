@@ -22,10 +22,11 @@
  * @param string $version
  * @return boolean
  */
-function is_php_version($version) {
+function is_php_version($version)
+{
   $version = isset($version) && is_string($version) ? trim($version) : null;
-  if (isset($version) && count($version)) {
-    return substr_compare(phpversion(), $version, 0, count($version)) === 0;
+  if (isset($version)) {
+    return substr_compare(phpversion(), $version, 0, $version) === 0;
   }
   return false;
 }
@@ -39,7 +40,8 @@ function is_php_version($version) {
  * @param string $needle
  * @return boolean
  */
-function memstr($haystack, $needle) {
+function memstr($haystack, $needle)
+{
   if (!isset($haystack) && is_string($haystack)) {
     return false;
   }
@@ -56,7 +58,8 @@ function memstr($haystack, $needle) {
  * @param type $lower
  * @return type
  */
-function get_class_ns($object, $lower = false) {
+function get_class_ns($object, $lower = false)
+{
   return zephir_get_class_ns($object, $lower);
 }
 
@@ -66,7 +69,8 @@ function get_class_ns($object, $lower = false) {
  * @param type $lower
  * @return type
  */
-function get_ns_class($object, $lower = false) {
+function get_ns_class($object, $lower = false)
+{
   return zephir_get_ns_class($object, $lower);
 }
 
@@ -75,7 +79,8 @@ function get_ns_class($object, $lower = false) {
  * @param type $str
  * @return type
  */
-function camelize($str) {
+function camelize($str)
+{
   return zephir_camelize($str);
 }
 
@@ -84,7 +89,8 @@ function camelize($str) {
  * @param type $str
  * @return type
  */
-function uncamelize($str) {
+function uncamelize($str)
+{
   return zephir_uncamelize($str);
 }
 
@@ -98,7 +104,8 @@ function uncamelize($str) {
  * @param boolean $case_sensitive
  * @return boolean
  */
-function starts_with($haystack, $needle, $case_sensitive = false) {
+function starts_with($haystack, $needle, $case_sensitive = false)
+{
   if (!isset($haystack) && is_string($haystack)) {
     return false;
   }
@@ -122,7 +129,8 @@ function starts_with($haystack, $needle, $case_sensitive = false) {
  * @param type $str
  * @return type
  */
-function ends_with($str) {
+function ends_with($str)
+{
   throw new \Exception('Function Not Implemented.');
 }
 
@@ -135,7 +143,8 @@ function ends_with($str) {
  * @param string $virtual_separator
  * @return string
  */
-function prepare_virtual_path($path, $virtual_separator) {
+function prepare_virtual_path($path, $virtual_separator)
+{
   if (isset($path) && is_string($path)) {
     if (!isset($virtual_separator) || !is_string($virtual_separator)) {
       return $path;
@@ -160,7 +169,8 @@ function prepare_virtual_path($path, $virtual_separator) {
  * @return \class
  * @throws \Exception
  */
-function create_instance($class) {
+function create_instance($class)
+{
   // Is 'class' a valid string?
   if (!isset($class) || !is_string($class)) { // YES
     throw new \Exception("Invalid class name");
@@ -185,7 +195,8 @@ function create_instance($class) {
  * @return type
  * @throws \Exception
  */
-function create_instance_params($class, $parameters) {
+function create_instance_params($class, $parameters)
+{
   // Is 'class' a valid string?
   if (!isset($class) || !is_string($class)) { // YES
     throw new \Exception("Invalid class name");
@@ -221,7 +232,8 @@ function create_instance_params($class, $parameters) {
  * See zephir_create_symbol_table() in memory.c
  * 
  */
-function create_symbol_table() {
+function create_symbol_table()
+{
   // Zephir Extension Optimication (not required in PHP)
   // see kernel/**/memory.c zephir_create_symbol_table
 }
@@ -236,7 +248,8 @@ function create_symbol_table() {
  * @return int
  * @throws Exception
  */
-function compare_mtime($filename1, $filename2) {
+function compare_mtime($filename1, $filename2)
+{
   if (!isset($filename1) || !is_string($filename1)) {
     throw new Exception("Invalid arguments supplied for compare_mtime()");
   }
@@ -261,7 +274,8 @@ function compare_mtime($filename1, $filename2) {
  * @param type $left
  * @param type $values
  */
-function merge_append(&$left, $values) {
+function merge_append(&$left, $values)
+{
   zephir_merge_append($left, $values);
 }
 
@@ -271,7 +285,8 @@ function merge_append(&$left, $values) {
  * @return string
  * @throws \Exception
  */
-function get_class_lower($class) {
+function get_class_lower($class)
+{
   return zephir_get_class($class, true);
 }
 
@@ -281,10 +296,11 @@ function get_class_lower($class) {
  * @return type
  * @throws \Exception
  */
-function iterator($object) {
+function iterator($object)
+{
   if (!isset($object) || !is_object($object)) {
     throw new \Exception("iterator expects an object");
   }
-  
+
   return $object;
 }

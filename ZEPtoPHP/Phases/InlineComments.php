@@ -22,7 +22,8 @@ use ZEPtoPHP\Base\Phase as IPhase;
  * 
  * @author Paulo Ferreira <pf at sourcenotes.org>
  */
-class InlineComments implements IPhase {
+class InlineComments implements IPhase
+{
 
   // Mixins
   use \ZEPtoPHP\Base\Mixins\DI;
@@ -35,7 +36,8 @@ class InlineComments implements IPhase {
    * @param array $ast AST to be processed
    * @return array Old or Transformed AST
    */
-  public function top($ast) {
+  public function top($ast)
+  {
     // Are we dealing with a Comment?
     if ($ast['type'] === 'comment') { // YES
       // Add Comment to Pending Document Blocks
@@ -56,7 +58,7 @@ class InlineComments implements IPhase {
     }
 
     // Are we dealing with a top level function?
-    if ($ast['type'] === 'function') { // YES: Cleanup it's comments
+    if (!is_null($ast) && isset($ast['type']) && $ast['type'] === 'function') { // YES: Cleanup it's comments
       $ast['statements'] = $this->_processStatementBlock($ast['statements']);
     }
 
@@ -70,7 +72,8 @@ class InlineComments implements IPhase {
    * @param array $property Class Property Definition
    * @return array New Property Definition, 'NULL' if to be removed
    */
-  public function constant(&$class, $constant) {
+  public function constant(&$class, $constant)
+  {
     // Does the Constant have a Documentation Block?
     if (isset($constant['docblock'])) { // YES: Normalize it
       $docblock = $this->_commentToDocBlock($constant['docblock']);
@@ -98,7 +101,8 @@ class InlineComments implements IPhase {
    * @param array $property Class Property Definition
    * @return array New Property Definition, 'NULL' if to be removed
    */
-  public function property(&$class, $property) {
+  public function property(&$class, $property)
+  {
     // Does the Property have a Documentation Block?
     if (isset($property['docblock'])) { // YES: Normalize it
       $docblock = $this->_commentToDocBlock($property['docblock']);
@@ -126,7 +130,8 @@ class InlineComments implements IPhase {
    * @param array $method Class Method Definition
    * @return array New Method Definition, 'NULL' if to be removed
    */
-  public function method(&$class, $method) {
+  public function method(&$class, $method)
+  {
     // Does the Method have a Documentation Block?
     if (isset($property['docblock'])) { // YES: Normalize it
       $docblock = $this->_commentToDocBlock($method['docblock']);
@@ -148,7 +153,8 @@ class InlineComments implements IPhase {
     return $method;
   }
 
-  protected function _processStatementBlock($block) {
+  protected function _processStatementBlock($block)
+  {
     /* TODO Handle Trailing comments 
      * i.e. comments that come after all the statements in a block.
      * 
@@ -242,7 +248,8 @@ class InlineComments implements IPhase {
    * @param array $ast Comment AST
    * @return array Comment Block Entry or Null, if an empty comment
    */
-  protected function _processComment($ast) {
+  protected function _processComment($ast)
+  {
     /* TODO Modify Lexer/Parser to distinguish among the comment types */
 
     // Convert AST to Document Block
@@ -257,7 +264,8 @@ class InlineComments implements IPhase {
     return $docblock;
   }
 
-  protected function _commentToDocBlock($value) {
+  protected function _commentToDocBlock($value)
+  {
     // Extract Comment Lines
     $lines = explode("\n", $value);
 
@@ -278,14 +286,14 @@ class InlineComments implements IPhase {
      * between /* , /* * and also // * which would produce a resultant, trimmed
      * token of '*...' the same as if it was /**
      */
-    $lines = array_map(function($e) {
+    $lines = array_map(function ($e) {
       return trim($e);
     }, $lines);
 
     $trim_stars = true;
     // Do we want to trim leadin and trailing '*'?
     if ($trim_stars) { // YES
-      $lines = array_map(function($e) {
+      $lines = array_map(function ($e) {
         $length = strlen($e);
         if ($length && ($e[0] === '*')) {
           $e = $length === 1 ? '' : trim(substr($e, 1));
@@ -322,5 +330,4 @@ class InlineComments implements IPhase {
 
     return null;
   }
-
 }

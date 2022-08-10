@@ -20,7 +20,8 @@ namespace ZEPtoPHP\Base\FileSystem;
  *
  * Uses the standard hard-disk as filesystem for temporary operations
  */
-class HardDisk extends FileSystemAbstract {
+class HardDisk extends FileSystemAbstract
+{
 
   protected $systemPath = null;
   protected $inputPath = null;
@@ -32,27 +33,33 @@ class HardDisk extends FileSystemAbstract {
    *
    * @param string $basePath
    */
-  public function __construct($path = '.') {
+  public function __construct($path = '.')
+  {
     return $this->_setPath('systemPath', $path);
   }
 
-  public function setSystemPath($path = '.') {
+  public function setSystemPath($path = '.')
+  {
     return $this->_setPath('systemPath', $path);
   }
 
-  public function setInputPath($path = '.') {
+  public function setInputPath($path = '.')
+  {
     return $this->_setPath('inputPath', $path);
   }
 
-  public function setOutputPath($path = '.') {
+  public function setOutputPath($path = '.')
+  {
     return $this->_setPath('outputPath', $path, true);
   }
 
-  public function setCachePath($path = '.') {
+  public function setCachePath($path = '.')
+  {
     return $this->_setPath('cachePath', $path, true);
   }
 
-  public function setTempPath($path) {
+  public function setTempPath($path)
+  {
     if (isset($path)) {
       if (!is_string($path)) {
         throw new \Exception("Invalid Value for Path [{$property}]");
@@ -73,7 +80,8 @@ class HardDisk extends FileSystemAbstract {
    * @return string
    * @throws \Exception
    */
-  public function realpath($path, $relative = FileSystemAbstract::NONE) {
+  public function realpath($path, $relative = FileSystemAbstract::NONE)
+  {
     // Is the Filesytem Initialized?
     if (!$this->isInitialized()) { // NO: Initialize before use...
       throw new \Exception('File System has not been initialize');
@@ -126,7 +134,8 @@ class HardDisk extends FileSystemAbstract {
    * @param string $path
    * @return boolean
    */
-  public function exists($path) {
+  public function exists($path)
+  {
     return file_exists($path);
   }
 
@@ -136,7 +145,8 @@ class HardDisk extends FileSystemAbstract {
    * @param string $path
    * @return array
    */
-  public function file($path) {
+  public function file($path)
+  {
     return exists($path) ? file($path) : null;
   }
 
@@ -146,7 +156,8 @@ class HardDisk extends FileSystemAbstract {
    * @param string $path
    * @return boolean
    */
-  public function modificationTime($path) {
+  public function modificationTime($path)
+  {
     return filemtime($path);
   }
 
@@ -155,7 +166,8 @@ class HardDisk extends FileSystemAbstract {
    *
    * @param string $path
    */
-  public function read($path) {
+  public function read($path)
+  {
     return file_get_contents($path);
   }
 
@@ -165,7 +177,8 @@ class HardDisk extends FileSystemAbstract {
    * @param string $path
    * @param string $data
    */
-  public function write($path, $data) {
+  public function write($path, $data)
+  {
     $basepath = dirname($path);
     if (!is_dir($basepath)) {
       if (mkdir($basepath, 0777, true) === FALSE) {
@@ -182,7 +195,8 @@ class HardDisk extends FileSystemAbstract {
    * @param string $descriptor
    * @param string $destination
    */
-  public function system($command, $descriptor, $destination) {
+  public function system($command, $descriptor, $destination)
+  {
     switch ($descriptor) {
       case 'stdout':
         $result = system($command . ' > ' . $destination, $rvalue);
@@ -199,18 +213,21 @@ class HardDisk extends FileSystemAbstract {
    * @param string $path
    * @return boolean
    */
-  public function requireFile($path) {
+  public function requireFile($path)
+  {
     return require $path;
   }
 
   /**
    * Deletes the temporary directory
    */
-  public function clean() {
+  public function clean()
+  {
     // Clean Temporary Files
     if (is_dir($this->tmpPath)) {
       $objects = new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->tmpPath), \RecursiveIteratorIterator::SELF_FIRST
+        new \RecursiveDirectoryIterator($this->tmpPath),
+        \RecursiveIteratorIterator::SELF_FIRST
       );
       foreach ($objects as $name => $object) {
         if (!$object->isDir()) {
@@ -222,7 +239,8 @@ class HardDisk extends FileSystemAbstract {
     // Clean Cache Files
     if (is_dir($this->cachePath)) {
       $objects = new \RecursiveIteratorIterator(
-        new \RecursiveDirectoryIterator($this->cachePath), \RecursiveIteratorIterator::SELF_FIRST
+        new \RecursiveDirectoryIterator($this->cachePath),
+        \RecursiveIteratorIterator::SELF_FIRST
       );
       foreach ($objects as $name => $object) {
         if (!$object->isDir()) {
@@ -241,7 +259,8 @@ class HardDisk extends FileSystemAbstract {
    * @param boolean $cache
    * @return string
    */
-  public function getHashFile($algorithm, $path, $cache = false) {
+  public function getHashFile($algorithm, $path, $cache = false)
+  {
     if ($cache == false) {
       return hash_file($algorithm, $path);
     } else {
@@ -270,7 +289,8 @@ class HardDisk extends FileSystemAbstract {
   /**
    * Initialize the filesystem
    */
-  protected function _initialize() {
+  protected function _initialize()
+  {
     if (!isset($this->inputPath)) {
       $this->inputPath = isset($this->outputPath) ? $this->outputPath : $this->systemPath;
     }
@@ -295,11 +315,12 @@ class HardDisk extends FileSystemAbstract {
    * @param type $path
    * @return type
    */
-  protected function _isRelative($path) {
+  protected function _isRelative($path)
+  {
     if (PHP_OS == "WINNT") {
       return preg_match('/^(?:\\\\.+|[a-z]:(?:\\|\/).*)$/i', $path) == FALSE;
     } else {
-      return $path{0} !== '/';
+      return $path[0] !== '/';
     }
   }
 
@@ -309,7 +330,8 @@ class HardDisk extends FileSystemAbstract {
    * @param type $path
    * @return type
    */
-  protected function _setPath($property, $path, $create = false) {
+  protected function _setPath($property, $path, $create = false)
+  {
     if (!isset($path) || !is_string($path)) {
       throw new \Exception("Invalid Value for Path [{$property}]");
     }
@@ -348,7 +370,8 @@ class HardDisk extends FileSystemAbstract {
    * @return string
    * @throws \Exception
    */
-  public function enumerateFiles($callback) {
+  public function enumerateFiles($callback)
+  {
     // Is the Filesytem Initialized?
     if (!$this->isInitialized()) { // NO: Initialize before use...
       throw new \Exception('File System has not been initialize');
@@ -360,7 +383,8 @@ class HardDisk extends FileSystemAbstract {
 
     // Create an Iterator for the Input Path
     $iterator = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($this->inputPath), \RecursiveIteratorIterator::SELF_FIRST
+      new \RecursiveDirectoryIterator($this->inputPath),
+      \RecursiveIteratorIterator::SELF_FIRST
     );
 
     // Iterate Files in Directory
@@ -377,5 +401,4 @@ class HardDisk extends FileSystemAbstract {
       }
     }
   }
-
 }
