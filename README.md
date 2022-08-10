@@ -1,3 +1,25 @@
+Maxwell Usage Notes
+========================
+Setup:
+1. `brew install re2c`
+2. `brew install json-c`
+3. `./install`
+4. clone https://github.com/phalcon/cphalcon, switch to branch `4.1.x` which is what Titan currently uses
+5. In cphalcon, find and replace all instances of `final class` with `class`. The converter will break on converting these classes without doing so.
+4. `./bin/zeptophp <path to cphalcon directory containing .zep files>`
+
+Conversion Notes:
+1. Ensure generated file whitespace is correct and remove extraneous "/*" comment lines
+2. Remove `// EMITTER VERSION [20151126]` comment for each file
+3. Ensure imports are actually used and convert any existing import to use the maxwell versions if they have already been converted.
+4. Convert `zephir_typeof()` calls to `is_<type>()`. Applies to ints, strings, objects, arrays, resources.
+5. Convert `zephir_isempty()` calls to `empty()`
+6. Convert `zephir_isset_array($array, $index)` calls to `isset($array[$index])`
+7. Convert `if (zephir_fetch_array($result, $array, $index))` calls to `if (isset($array[$index])) { $result = $array[$index]; }`. Note: The zephir fetch array sets the result variable's value if the array item is set. Pay special attention to not change behavior.
+7. Convert `starts_with` calls to `ZephirFuncs::startsWith()`.
+8. Convert `memstr($haystack, $needle)` calls to `strpos($haystack, $needle) !== false`
+9. Converter does not bring other method types, some interfaces may fail to be met because of this. Fix these on a case-by-case basis.
+
 ZEPHIR to PHP Translator
 ========================
 
