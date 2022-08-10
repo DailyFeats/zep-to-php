@@ -50,6 +50,11 @@ mkdir -p "$ZEPBUILD"
 # ZEPHIR Root
 ZEPHIRROOT="${CWD}/externals/zephir"
 
+git clone https://github.com/zephir-lang/zephir.git "$ZEPHIRROOT"
+cd "$ZEPHIRROOT"
+git checkout 3386a95bedd1e27e0cef0683e1e91224089aebac
+cd "$CWD"
+
 # Copy Parser Files
 cp "${ZEPHIRROOT}/parser/"{xx.h,lemon.c,lempar.c,parser.lemon,base.c,scanner.re,scanner.h} "${ZEPBUILD}"
 

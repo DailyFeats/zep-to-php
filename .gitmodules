@@ -7,6 +7,3 @@
 [submodule "externals/Kit-ClassLoader"]
 	path = externals/Kit-ClassLoader
 	url = https://github.com/Riimu/Kit-ClassLoader.git
-[submodule "externals/zephir"]
-	path = externals/zephir
-	url = https://github.com/zephir-lang/zephir.git
