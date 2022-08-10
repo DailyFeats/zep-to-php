@@ -18,7 +18,7 @@ Conversion Notes:
 7. Convert `if (zephir_fetch_array($result, $array, $index))` calls to `if (isset($array[$index])) { $result = $array[$index]; }`. Note: The zephir fetch array sets the result variable's value if the array item is set. Pay special attention to not change behavior.
 7. Convert `starts_with` calls to `ZephirFuncs::startsWith()`.
 8. Convert `memstr($haystack, $needle)` calls to `strpos($haystack, $needle) !== false`
-9. Converter does not bring other method types, some interfaces may fail to be met because of this. Fix these on a case-by-case basis.
+9. Converter does not bring over method param or return types, some interfaces may fail to be met because of this. Fix these on a case-by-case basis.
 
 ZEPHIR to PHP Translator
 ========================
